@@ -1,0 +1,52 @@
+#include<iostream>
+#include<string>
+#include<fstream>
+using namespace std;
+
+bool isLoggedin(){
+	string username,password,un,pw;
+	cout<<"Enter ur Username"<<endl; cin>>username;
+	cout<<"Enter ur Password"<<endl; cin>>password;
+	
+	ifstream read("D:\Coding Works\\"+username+".txt");
+	
+	getline(read,un);
+	getline(read,pw);
+	
+	if( un==username && pw==password )
+		return true;
+	else
+		return false;
+}
+
+
+int main(){
+	int choice;
+	
+	cout<<"1:Register\n 2:Login\n Your Choice:"; cin>>choice ;
+	if(choice==1){
+		string username ,password;
+		
+		cout<<"Select ur Username ;"; cin>>username;
+		cout<<"Select ur Password ;"; cin>>password;
+		
+		ofstream file;
+		file.open("D:\Coding Works\\"+username+".txt");
+		file<<username<<endl<<password<<endl;
+		file.close();
+		main();	
+	}
+	 else if(choice==2){
+	 	bool status=isLoggedin();
+	 	
+	 	if(!status){
+	 		cout<<"False login"<<endl;
+	 		system("pause");
+	 		return 0;
+		 }
+		 else
+		 	cout<<"Succesfully login"<<endl;
+		 	system("pause");
+		 	return 1;
+	 }
+}
