@@ -1,0 +1,124 @@
+#include<iostream>
+using namespace std;
+
+class node{
+	public:
+		int data;
+		node* next;
+		node(int item){
+			this->data=item;
+			this->next=NULL;
+		}
+		~node(){
+			int value=this->data;
+			//memory free 
+			if(this->next!=NULL){
+				delete next;
+				this->next=NULL;
+			}
+			cout<<"Memory is free for node of data "<<value<<endl;
+		}
+};
+
+
+//Globally defined
+node* head;
+
+//node** tail = &head;	// Always use '&' for double pointer for pointer to pointer 
+
+void addFront(int item){
+	node* newnode=new node(item);
+	newnode->next=head;
+	head=newnode;
+}
+
+
+void addLast(int item){
+	node* newnode=new node(item);
+	node* ptr=head;
+	
+	while(ptr->next!=NULL){
+		ptr=ptr->next;
+	}
+	ptr->next=newnode;
+}
+
+
+int addInMid(int pos,int item){
+	if(pos==1){
+		addFront(item);
+		return 1;
+	}
+	
+	node* temp=head;
+	int cnt=1;
+	
+	while(cnt<pos-1){
+		if(temp==NULL) { cout<<pos<<" is INVALID POSITION \n"; return 0; }
+		temp=temp->next;
+		cnt++;
+	}
+	node* newnode=new node(item);
+	newnode->next=temp->next;
+	temp->next=newnode;
+	return 1;
+}
+
+
+void deletenode(int pos){
+	if(pos==1){
+		node* temp=head;
+		head=head->next;
+		temp->next=NULL;
+		delete temp;
+	}
+	else{
+		node* curr=head;
+		node* prev=NULL;
+		
+		int cnt=1;
+		
+		while(cnt<pos){
+			prev=curr;
+			curr=curr->next;
+			cnt++;
+		}
+		
+		prev->next=curr->next;
+		curr->next=NULL;
+		delete curr;
+	}
+}
+
+
+void traverse(){
+	if(head==NULL){
+		cout<<"List is Empty \n";
+	}
+	else{
+		node* ptr=head;
+		cout<<"--------------Linked List--------------"<<endl;
+		while(ptr!=NULL){
+			cout<<ptr->data<<" --> ";
+			ptr=ptr->next;
+		}
+		cout<<"NULL "<<endl;
+	}
+}
+
+
+
+int main(){
+	
+	addFront(1);
+	addFront(2);
+	addFront(3);
+	addLast(5);
+	addFront(4);
+	addLast(6);
+	addInMid(1,23);
+	traverse();
+	deletenode(3);
+	traverse();
+	
+}
