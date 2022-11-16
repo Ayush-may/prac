@@ -1,0 +1,177 @@
+#include<iostream>
+#include<stdlib.h>
+#include <string.h>
+using namespace std;
+
+struct employ{
+	char name[20],num[20],comp[20];
+	float salary;
+};
+
+int main(){
+	
+	FILE* fp,*fp1;
+	employ e;
+	char op,yes_no;
+	char to_del[20],change[20];
+	int n,i;
+	
+	//again is for goto
+	again: 
+	cout<<"1.SHOW ALL RECORDS\n";
+	cout<<"2.INSERT A NEW RECORD\n";
+	cout<<"3.DELETE A EXISTING RECORD\n";
+	cout<<"4.UPDATE A EXISTING RECORD\n";
+	cout<<"5.DELETE ALL RECORD\n";
+	cout<<"6.EXIT\n";
+	
+	cout<<"Enter anyone option :"; cin>>op;
+	
+	switch(op){
+		case'1':			//show all record
+			
+			fp=fopen("employ.dat","r");
+			cout<<"NAME			NUM			COMPANY			SALARY"<<endl;
+			
+			while(!feof(fp)){
+				fread(&e,sizeof(e),1,fp);
+				cout<<e.name<<"		"<<e.num<<"		"<<e.comp<<"			"<<e.salary<<endl;	
+			}
+			fclose(fp);
+			
+			cout<<"DO U WANT TO CONT...(Y/N)";	 cin>>yes_no;
+			if(yes_no=='Y'||yes_no== 'y'){
+				system("cls");
+				goto again;
+				}
+			else
+				break;
+			
+		case '2':			//insert a new record
+			
+			fp=fopen("employ.dat","a");
+			cout<<"HOW MANY RECORDS U WANT TO INSERT :"; cin>>n;
+			
+			for(i=1;i<=n;i++){
+				cout<<"ENTER NAME OF EMPLOY :"; cin>>e.name;
+				cout<<"ENTER NUMBER OF EMPLOY :"; cin>>e.num;
+				cout<<"ENTER COMPANY OF EMPLOY :"; cin>>e.comp;
+				cout<<"ENTER SALARY OF EMPLOY :"; cin>>e.salary;
+				fwrite(&e,sizeof(e),1,fp);	
+			}
+			fclose(fp);
+			
+			cout<<"DO U WANT TO CONT...(Y/N)";	 cin>>yes_no;
+			if(yes_no=='Y'||yes_no=='y'){
+				system("cls");
+				goto again;
+				}
+			else
+				break;
+			
+		case '3':			//Delete existing record
+			
+		
+			cout<<"ENTER THE NUMBER TO DELETE THE DATA FROM FILE :"; cin>>to_del;
+			
+			fp=fopen("employ.dat","r");
+			fp1=fopen("temp.dat","w");
+			
+			
+			while(!feof(fp)){
+			//	cout<<"inside of loop"<<endl;
+				fread(&e,sizeof(e),1,fp);
+				
+				if( strcmp(e.name,to_del)!=0){
+			//		cout<<"inside of if condition"<<endl;
+					fwrite(&e,sizeof(e),1,fp1);
+
+				}
+			}
+			
+			fclose(fp); fclose(fp1);			
+			if(remove("employ.dat")==0){
+				cout<<"SUCCESSFULLY DELETED	\n";
+			}
+			else
+				cout<<"SOME TECHNICAL PROBLEM\nPLS TRY AGAIN...";
+				
+			rename("temp.dat","employ.dat");	
+			
+			cout<<"DO U WANT TO CONT...(Y/N)";	 cin>>yes_no;
+			if(yes_no=='Y'||yes_no=='y'){
+				system("cls");
+				goto again;
+				}
+			else
+				break;
+				
+		case'4':		//Update existing records
+		
+			cout<<"ENTER THE NUMBER TO UPDATE FROM THE FILE:"; cin>>to_del;
+		//	cout<<"ENTER NEW NAME :"; cin>>change;
+			
+			fp=fopen("employ.dat","r");
+			fp1=fopen("temp.dat","w");
+			
+			
+			while(!feof(fp)){
+			//	cout<<"inside of loop"<<endl;
+				fread(&e,sizeof(e),1,fp);	
+				if( strcmp(e.name,to_del)==0){
+			
+			//	cout<<"inside of if condition"<<endl;
+				cout<<"ENTER NAME OF EMPLOY :"; cin>>e.name;
+				cout<<"ENTER NUMBER OF EMPLOY :"; cin>>e.num;
+				cout<<"ENTER COMPANY OF EMPLOY :"; cin>>e.comp;
+				cout<<"ENTER SALARY OF EMPLOY :"; cin>>e.salary;
+			//	fwrite(&e,sizeof(e),1,fp1);			
+				}
+					fwrite(&e,sizeof(e),1,fp1);
+			}
+			
+			fclose(fp); fclose(fp1);
+			
+						
+			if(remove("employ.dat")==0){
+				cout<<"SUCCESSFULLY UPDATED	\n";
+			}
+			else
+				cout<<"SOME TECHNICAL PROBLEM\nPLS TRY AGAIN...";
+				
+			rename("temp.dat","employ.dat");				
+			
+			cout<<"DO U WANT TO CONT...(Y/N)";	 cin>>yes_no;
+			if(yes_no=='Y'||yes_no=='y'){
+				system("cls");
+				goto again;
+				}
+			else
+				break;
+	case '5' :			//Delete all records 
+		
+		
+			cout<<"Do u want to delete...(Y/N)  "; cin>>yes_no;
+			if(yes_no=='Y'||yes_no=='y'){
+			fp=fopen("employ.dat","w");
+			fclose(fp);
+			
+			cout<<"DO U WANT TO CONT...(Y/N)";	 cin>>yes_no;
+			if(yes_no=='Y'||yes_no=='y'){
+				system("cls");
+				goto again;
+					}
+			else
+				break;	
+			}
+			else
+			cout<<"DO U WANT TO CONT...(Y/N)";	 cin>>yes_no;
+			if(yes_no=='Y'||yes_no=='y'){
+				system("cls");
+				goto again;
+					}
+			else
+				break;		
+	}
+	
+}
