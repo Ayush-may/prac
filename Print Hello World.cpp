@@ -6,6 +6,7 @@ using namespace std;
 
 int main(){
 	
+	//just testing
 	srand(time(0));
 	
 	string key="1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+{}:<>?/.,;'][-]";
